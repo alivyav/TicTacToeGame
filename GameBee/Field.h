@@ -18,12 +18,12 @@ public:
 	void draw(RenderTarget& target, RenderStates states) const override;
 	void position(float x, float y);
 	
-	void setWhich(int which);
 	Sprite getSprite() const;
 
 	void setField(bool status);
 	bool getField() const;
 	int getWhich();
+	void setWhich(int which);
 	//void color(Color color);
 	//bool Update(Vector2f position, Event event);
 };

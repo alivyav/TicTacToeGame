@@ -7,8 +7,10 @@ using namespace sf;
 class EndWindow : public Drawable
 {private:
 	const Texture texture;
+	const Texture winnertx;
 	Sprite sprite;
 	Sprite textSprite;
+	Sprite winner;
 	Text text;
 	Font font;
 

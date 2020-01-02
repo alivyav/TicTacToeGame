@@ -13,6 +13,7 @@ AIWindow::AIWindow()
 	//text2.setCharacterSize(50);
 	//text2.setFillColor(sf::Color::Red);
 	//text2.setPosition(250, 220);
+	//hhhh
 
 	settings = new Button(700, 900, 50, 50, "S", 50);
 	settings->setColors();
@@ -50,7 +51,7 @@ void AIWindow::update(RenderWindow& window, Event& event)
 		text2.setFillColor(Color::White);
 		text2.setPosition(250, 220);
 	}
-
+	
 	else
 	{
 		text2.setFont(font);

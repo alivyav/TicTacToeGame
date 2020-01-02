@@ -60,4 +60,5 @@ void GameLoop::Loop()
 GameLoop::~GameLoop()
 {
 	delete this->startWindow;
+	delete this->friendWindow;
 }

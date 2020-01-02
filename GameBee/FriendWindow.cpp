@@ -85,10 +85,26 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 						this->amount++;
 						isOk = false;
 					}
+					if (fields[a][b].getWhich() == 1)
+						maxRowX++;
+					if(fields[a][b].getWhich() == 2)
+						maxRowO++;
 
 				}
+
+			}
+			if (maxRowO == 3)
+			{
+				states = States::WIN;
+				//	maxRowO = 0;
+			}
+			if (maxRowX == 3)
+			{
+				states = States::WIN;
+				//	maxRowX = 0;
 			}
 		}
+			
 	}
 	else if (event.type == Event::MouseButtonReleased)
 		isOk = true;

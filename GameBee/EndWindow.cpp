@@ -1,9 +1,14 @@
 #include "EndWindow.h"
 EndWindow::EndWindow()
 {
-	const_cast<Texture&>(texture).loadFromFile("Resources/res/pobrane.png");
-	sprite.setTexture(texture);
-	sprite.setPosition(200, 200);
+	//const_cast<Texture&>(texture).loadFromFile("Resources/res/gameover.jpg");
+	//sprite.setTexture(texture);
+	//sprite.setPosition(500, 500);
+
+	//if()
+	const_cast<Texture&>(winnertx).loadFromFile("Resources/res/gameover.jpg"); //zmnieniaæ w zale¿noœci od wygranej???? JAK?
+	winner.setTexture(winnertx);
+	winner.setPosition(250, 250);
 
 	font.loadFromFile("Resources/fonts/Neon.ttf");
 	text.setFont(font);
@@ -27,6 +32,7 @@ EndWindow::~EndWindow()
 
 void EndWindow::update(RenderWindow& window, Event& event)
 {
+	window.clear(Color::Yellow);
 	Vector2f position = Vector2f(Mouse::getPosition(window));
 	if (yes->Update(position, event))
 	{
@@ -49,4 +55,5 @@ void EndWindow::draw(RenderTarget& target, RenderStates states) const
 	target.draw(*yes);
 	target.draw(*no);
 	target.draw(*settings);
+	target.draw(winner);
 }

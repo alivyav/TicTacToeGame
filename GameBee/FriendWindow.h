@@ -13,6 +13,12 @@ private:
 	int amount = 0;
 	bool isOk{ true };
 
+	int maxColumnX = 0;
+	int maxColumnO = 0;
+	int maxRowX = 0;
+	int maxRowO = 0;
+	int* won;
+
 	Text text;
 	Text text2;
 	Font font;
