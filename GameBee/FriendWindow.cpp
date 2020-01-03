@@ -8,12 +8,6 @@ FriendWindow::FriendWindow()
 	text.setFillColor(Color(255, 255, 0));
 	text.setPosition(50, 50);
 
-	//text2.setFont(font);
-	//text2.setString("IT'S ... TURN!");
-	//text2.setCharacterSize(50);
-	//text2.setFillColor(sf::Color::Red);
-	//text2.setPosition(250, 220);
-
 	settings = new Button(700, 900, 50, 50, "S", 50);
 	settings->setColors();
 
@@ -85,24 +79,43 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 						this->amount++;
 						isOk = false;
 					}
-					if (fields[a][b].getWhich() == 1)
-						maxRowX++;
-					if(fields[a][b].getWhich() == 2)
-						maxRowO++;
-
+					
 				}
-
+				
 			}
-			if (maxRowO == 3)
+			for (int i = 0; i < 3; i++)
 			{
-				states = States::WIN;
-				//	maxRowO = 0;
+				if ((fields[i][0].getWhich() == 1 && fields[i][1].getWhich() == 1 && fields[i][2].getWhich() == 1) ||
+					(fields[0][i].getWhich() == 1 && fields[1][i].getWhich() == 1 && fields[2][i].getWhich() == 1))
+				{
+					whoWon = 1;
+					states = States::WIN;
+				}
+				if ((fields[i][0].getWhich() == 2 && fields[i][1].getWhich() == 2 && fields[i][2].getWhich() == 2) ||
+					(fields[0][i].getWhich() == 2 && fields[1][i].getWhich() == 2 && fields[2][i].getWhich() == 2))
+				{
+					whoWon = 2;
+					states = States::WIN;
+				}
 			}
-			if (maxRowX == 3)
-			{
-				states = States::WIN;
-				//	maxRowX = 0;
-			}
+				if ((fields[0][0].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][2].getWhich() == 1) ||
+					(fields[0][2].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][0].getWhich() == 1))
+				{
+					whoWon = 1;
+					states = States::WIN;
+				}
+				if ((fields[0][0].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][2].getWhich() == 2) ||
+					(fields[0][2].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][0].getWhich() == 2))
+				{
+					whoWon = 2;
+					states = States::WIN;
+				}
+				
+				if (this->amount >= 9)
+				{
+					whoWon = 0;
+					states = States::WIN;
+				}
 		}
 			
 	}
@@ -110,6 +123,12 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 		isOk = true;
 	//gra
 }
+
+int FriendWindow::getWhoWon()
+{
+	return whoWon;
+}
+
 void FriendWindow::draw(RenderTarget& target, RenderStates states) const
 {
 	target.draw(sprite);

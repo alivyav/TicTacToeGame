@@ -17,7 +17,7 @@ private:
 	int maxColumnO = 0;
 	int maxRowX = 0;
 	int maxRowO = 0;
-	int* won;
+	int whoWon;
 
 	Text text;
 	Text text2;
@@ -29,5 +29,6 @@ public:
 	~FriendWindow();
 	void update(RenderWindow& window, Event& event);
 	void draw(RenderTarget& target, RenderStates states) const override;
+	int getWhoWon();
 };
 

@@ -14,6 +14,8 @@ class EndWindow : public Drawable
 	Text text;
 	Font font;
 
+	int whoWon;
+
 	Button* yes;
 	Button* no;
 	Button* settings;
@@ -23,5 +25,6 @@ public:
 	~EndWindow();
 	void update(RenderWindow& window, Event& event);
 	void draw(RenderTarget& target, RenderStates states) const override;
+	void setWhoWon(int whoWon);
 };
 

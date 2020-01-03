@@ -28,6 +28,13 @@ void GameLoop::Loop()
 				window.close();
 			}
 		}
+
+		if (isOk && states == States::WIN)
+		{
+			endWindow->setWhoWon(friendWindow->getWhoWon());
+			isOk = false;
+		}
+
 		switch (states)
 		{
 		case States::START:
@@ -50,15 +57,36 @@ void GameLoop::Loop()
 			endWindow->update(window, event);
 			window.draw(*endWindow);
 			break;
-
+		case States::NEW_START:
+			newGame();
+			states = States::START;
+			isOk = true;
+			break;
 		}
 		
 		window.display();
 	}
 }
 
+void GameLoop::newGame()
+{
+	delete this->startWindow;
+	delete this->friendWindow;
+	delete this->aiWindow;
+	delete this->optionWindow;
+	delete this->endWindow;
+
+	this->startWindow = new StartWindow();
+	this->optionWindow = new OptionWindow();
+	this->endWindow = new EndWindow();
+	this->friendWindow = new FriendWindow();
+	this->aiWindow = new AIWindow();
+}
 GameLoop::~GameLoop()
 {
 	delete this->startWindow;
 	delete this->friendWindow;
+	delete this->aiWindow;
+	delete this->optionWindow;
+	delete this->endWindow;
 }

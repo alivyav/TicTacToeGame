@@ -5,11 +5,6 @@ EndWindow::EndWindow()
 	//sprite.setTexture(texture);
 	//sprite.setPosition(500, 500);
 
-	//if()
-	const_cast<Texture&>(winnertx).loadFromFile("Resources/res/gameover.jpg"); //zmnieniaæ w zale¿noœci od wygranej???? JAK?
-	winner.setTexture(winnertx);
-	winner.setPosition(250, 250);
-
 	font.loadFromFile("Resources/fonts/Neon.ttf");
 	text.setFont(font);
 	text.setString("Do you want to play again?");
@@ -30,13 +25,37 @@ EndWindow::~EndWindow()
 
 }
 
+void EndWindow::setWhoWon(int whoWon)
+{
+	this->whoWon = whoWon;
+}
+
 void EndWindow::update(RenderWindow& window, Event& event)
 {
+	switch (whoWon)
+	{
+	case 0:
+		const_cast<Texture&>(winnertx).loadFromFile("Resources/res/draw.png");
+		winner.setTexture(winnertx);
+		winner.setPosition(200, 250);
+		break;
+	case 1:
+		const_cast<Texture&>(winnertx).loadFromFile("Resources/res/owon.png");
+		winner.setTexture(winnertx);
+		winner.setPosition(200, 250);
+		break;
+	case 2:
+		const_cast<Texture&>(winnertx).loadFromFile("Resources/res/xwon.png");
+		winner.setTexture(winnertx);
+		winner.setPosition(200, 250);
+		break;
+	}
+
 	window.clear(Color::Yellow);
 	Vector2f position = Vector2f(Mouse::getPosition(window));
 	if (yes->Update(position, event))
 	{
-		states = States::START;
+		states = States::NEW_START;
 	}
 	if (no->Update(position, event))
 	{

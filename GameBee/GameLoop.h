@@ -23,7 +23,10 @@ private:
 	AIWindow* aiWindow;
 	RenderWindow window;
 
+	bool isOk = true;
+
 	void Loop();
+	void newGame();
 };
 
 
