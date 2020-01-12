@@ -1,10 +1,15 @@
 #include "FriendWindow.h"
+#include<iostream>
 FriendWindow::FriendWindow() 
 {
-	font.loadFromFile("Resources/fonts/Neon.ttf");
+	//const_cast<Texture&>(texturegame).loadFromFile("Resources/res/game.png");
+	//spritegame.setTexture(texturegame);
+	//spritegame.setPosition(0, 0);
+
+	font.loadFromFile("Resources/fonts/beon.ttf");
 	text.setFont(font);
 	text.setString("Get 3 of your marks in a row ");
-	text.setCharacterSize(52);
+	text.setCharacterSize(48);
 	text.setFillColor(Color(255, 255, 0));
 	text.setPosition(50, 50);
 
@@ -76,6 +81,7 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 							fields[a][b].setWhich(2);
 						else
 							fields[a][b].setWhich(1);
+						std::cout << fields[a][b].getWhich() << std::endl;
 						this->amount++;
 						isOk = false;
 					}
@@ -83,6 +89,13 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 				}
 				
 			}
+
+			if (this->amount == 9)
+			{
+				whoWon = 0;
+				states = States::WIN;
+			}
+
 			for (int i = 0; i < 3; i++)
 			{
 				if ((fields[i][0].getWhich() == 1 && fields[i][1].getWhich() == 1 && fields[i][2].getWhich() == 1) ||
@@ -110,12 +123,6 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 					whoWon = 2;
 					states = States::WIN;
 				}
-				
-				if (this->amount >= 9)
-				{
-					whoWon = 0;
-					states = States::WIN;
-				}
 		}
 			
 	}
@@ -131,6 +138,7 @@ int FriendWindow::getWhoWon()
 
 void FriendWindow::draw(RenderTarget& target, RenderStates states) const
 {
+	target.draw(spritegame);
 	target.draw(sprite);
 	target.draw(text);
 	target.draw(text2);

@@ -13,6 +13,12 @@ private:
 	int amount = 0;
 	bool isOk{ true };
 
+	int maxColumnX = 0;
+	int maxColumnO = 0;
+	int maxRowX = 0;
+	int maxRowO = 0;
+	int whoWon;
+
 	Text text;
 	Text text2;
 	Font font;
@@ -23,5 +29,6 @@ public:
 	~AIWindow();
 	void update(RenderWindow& window, Event& event);
 	void draw(RenderTarget& target, RenderStates states) const override;
+	int getWhoWon();
 };
 

@@ -8,8 +8,12 @@ using namespace sf;
 class StartWindow : public sf::Drawable
 {
 private:
-	const sf::Texture texture;
-	sf::Sprite sprite;
+	const Texture texture;
+	Sprite sprite;
+	const Texture textureb;
+	Sprite spriteb;
+	Font font;
+	Text text;
 
 	Button* button;
 	Button* button2;

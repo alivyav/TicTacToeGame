@@ -43,21 +43,22 @@ AIWindow::~AIWindow()
 }
 void AIWindow::update(RenderWindow& window, Event& event)
 {
+	window.clear(Color(159, 128, 255));
 	if (this->amount % 2 == 0)
 	{
 		text2.setFont(font);
 		text2.setString("IT'S X TURN!");
 		text2.setCharacterSize(50);
-		text2.setFillColor(Color::White);
+		text2.setFillColor(Color::Black);
 		text2.setPosition(250, 220);
 	}
-	
+
 	else
 	{
 		text2.setFont(font);
 		text2.setString("IT'S O TURN!");
 		text2.setCharacterSize(50);
-		text2.setFillColor(Color::Black);
+		text2.setFillColor(Color::White);
 		text2.setPosition(250, 220);
 	}
 
@@ -87,13 +88,54 @@ void AIWindow::update(RenderWindow& window, Event& event)
 					}
 
 				}
+
+			}
+			for (int i = 0; i < 3; i++)
+			{
+				if ((fields[i][0].getWhich() == 1 && fields[i][1].getWhich() == 1 && fields[i][2].getWhich() == 1) ||
+					(fields[0][i].getWhich() == 1 && fields[1][i].getWhich() == 1 && fields[2][i].getWhich() == 1))
+				{
+					whoWon = 1;
+					states = States::WIN;
+				}
+				if ((fields[i][0].getWhich() == 2 && fields[i][1].getWhich() == 2 && fields[i][2].getWhich() == 2) ||
+					(fields[0][i].getWhich() == 2 && fields[1][i].getWhich() == 2 && fields[2][i].getWhich() == 2))
+				{
+					whoWon = 2;
+					states = States::WIN;
+				}
+			}
+			if ((fields[0][0].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][2].getWhich() == 1) ||
+				(fields[0][2].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][0].getWhich() == 1))
+			{
+				whoWon = 1;
+				states = States::WIN;
+			}
+			if ((fields[0][0].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][2].getWhich() == 2) ||
+				(fields[0][2].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][0].getWhich() == 2))
+			{
+				whoWon = 2;
+				states = States::WIN;
+			}
+
+			if (this->amount >= 9)
+			{
+				whoWon = 0;
+				states = States::WIN;
 			}
 		}
+
 	}
 	else if (event.type == Event::MouseButtonReleased)
 		isOk = true;
 	//gra
 }
+
+int AIWindow::getWhoWon()
+{
+	return whoWon;
+}
+
 void AIWindow::draw(RenderTarget& target, RenderStates states) const
 {
 	target.draw(sprite);

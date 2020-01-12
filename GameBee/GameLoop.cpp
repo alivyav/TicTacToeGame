@@ -33,6 +33,9 @@ void GameLoop::Loop()
 		{
 			endWindow->setWhoWon(friendWindow->getWhoWon());
 			isOk = false;
+
+			//endWindow->setWhoWon(aiWindow->getWhoWon());
+			//isOk = false;
 		}
 
 		switch (states)

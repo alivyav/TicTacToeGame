@@ -22,6 +22,6 @@ public:
 	~Button() = default;
 	void draw(RenderTarget& target, RenderStates states) const override;
 	bool Update(Vector2f position, Event event);
-	void setColors(Color no_clicked=Color::White, Color on_button=Color::Cyan, Color clicked = Color::Magenta);
+	void setColors(Color no_clicked=Color::Yellow, Color on_button=Color::Cyan, Color clicked = Color::Magenta);
 };
 

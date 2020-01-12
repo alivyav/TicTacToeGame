@@ -1,11 +1,11 @@
 #include "Button.h"
 Button::Button(float x, float y, float width, float height, std::string text, int size, std::string fontName)
 {
-	font.loadFromFile("Resources/fonts/Neon.ttf");
+	font.loadFromFile("Resources/fonts/beon.ttf");
 
 	this->shape.setSize(Vector2f(width, height));
 	this->shape.setPosition(x, y);
-	this->shape.setFillColor(Color::Magenta);
+	this->shape.setFillColor(Color::Transparent);
 
 	this->text.setString(text);
 	this->text.setFont(font);

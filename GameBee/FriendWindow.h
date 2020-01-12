@@ -22,8 +22,10 @@ private:
 	Text text;
 	Text text2;
 	Font font;
-	const sf::Texture texture;
-	sf::Sprite sprite;
+	const Texture texture;
+	const Texture texturegame;
+	Sprite sprite;
+	Sprite spritegame;
 public:
 	FriendWindow();
 	~FriendWindow();
