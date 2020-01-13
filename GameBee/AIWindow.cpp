@@ -1,19 +1,17 @@
 #include "AIWindow.h"
+#include<iostream>
 AIWindow::AIWindow()
 {
-	font.loadFromFile("Resources/fonts/Neon.ttf");
+	//const_cast<Texture&>(texturegame).loadFromFile("Resources/res/game.png");
+	//spritegame.setTexture(texturegame);
+	//spritegame.setPosition(0, 0);
+
+	font.loadFromFile("Resources/fonts/beon.ttf");
 	text.setFont(font);
 	text.setString("Get 3 of your marks in a row ");
-	text.setCharacterSize(52);
+	text.setCharacterSize(48);
 	text.setFillColor(Color(255, 255, 0));
 	text.setPosition(50, 50);
-
-	//text2.setFont(font);
-	//text2.setString("IT'S ... TURN!");
-	//text2.setCharacterSize(50);
-	//text2.setFillColor(sf::Color::Red);
-	//text2.setPosition(250, 220);
-	//hhhh
 
 	settings = new Button(700, 900, 50, 50, "S", 50);
 	settings->setColors();
@@ -41,6 +39,88 @@ AIWindow::~AIWindow()
 {
 
 }
+
+int AIWindow::minimax(int depth, bool isMaximizing)
+{
+	int result = this->isWin();
+	if (result != 100)
+	{
+		return result;
+	}
+	if (isMaximizing)
+	{
+		int bestScore = -10000;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (fields[i][j].getWhich() == 0)
+				{
+					fields[i][j].setWhich(1);
+					int score = minimax(depth + 1, false);
+					fields[i][j].setWhich(0);
+					if (score > bestScore)
+						bestScore = score;
+				}
+			}
+		}
+		return bestScore;
+	}
+	else
+	{
+		int bestScore = 100000;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (fields[i][j].getWhich() == 0)
+				{
+					fields[i][j].setWhich(2);
+					int score = minimax(depth + 1, true);
+					fields[i][j].setWhich(0);
+					if (score < bestScore)
+						bestScore = score;
+				}
+			}
+		}
+		return bestScore;
+	}
+}
+
+int AIWindow::isWin()
+{
+	int counter = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		if ((fields[i][0].getWhich() == 1 && fields[i][1].getWhich() == 1 && fields[i][2].getWhich() == 1) ||
+			(fields[0][i].getWhich() == 1 && fields[1][i].getWhich() == 1 && fields[2][i].getWhich() == 1))
+		{
+			return -10;
+		}
+		if ((fields[i][0].getWhich() == 2 && fields[i][1].getWhich() == 2 && fields[i][2].getWhich() == 2) ||
+			(fields[0][i].getWhich() == 2 && fields[1][i].getWhich() == 2 && fields[2][i].getWhich() == 2))
+		{
+			return 10;
+		}
+		for (int j = 0; j < 3; j++)
+			if (fields[i][j].getWhich() == 0)
+				counter++;
+	}
+	if ((fields[0][0].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][2].getWhich() == 1) ||
+		(fields[0][2].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][0].getWhich() == 1))
+	{
+		return -10;
+	}
+	if ((fields[0][0].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][2].getWhich() == 2) ||
+		(fields[0][2].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][0].getWhich() == 2))
+	{
+		return 10;
+	}
+	
+	if (counter == 0) return 0;
+	return 100;
+}
+
 void AIWindow::update(RenderWindow& window, Event& event)
 {
 	window.clear(Color(159, 128, 255));
@@ -68,7 +148,43 @@ void AIWindow::update(RenderWindow& window, Event& event)
 	{
 
 	}
-	if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			std::cout << fields[i][j].getWhich() << " - ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "---------------------------------------" << std::endl;
+
+	if (this->amount % 2 != 0)
+	{
+		int bestScore = -1000000;
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (fields[i][j].getWhich() == 0)
+				{
+					fields[i][j].setWhich(1);
+					int score = minimax(0, false);
+					fields[i][j].setWhich(0);
+					if (score > bestScore)
+					{
+						bestScore = score;
+						this->bestMoveX = i;
+						this->bestMoveY = j;
+					}
+				}
+			}
+		}
+		fields[bestMoveX][bestMoveY].setWhich(1);
+		fields[bestMoveX][bestMoveY].setField(true);
+		this->amount++;
+	}
+	else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && (this->amount % 2 == 0))
 	{
 		if (isOk)
 		{
@@ -79,10 +195,8 @@ void AIWindow::update(RenderWindow& window, Event& event)
 					if (fields[a][b].getSprite().getGlobalBounds().contains(position) && !fields[a][b].getField())
 					{
 						fields[a][b].setField(true);
-						if (this->amount % 2 == 0)
-							fields[a][b].setWhich(2);
-						else
-							fields[a][b].setWhich(1);
+						fields[a][b].setWhich(2);
+						std::cout << fields[a][b].getWhich() << std::endl;
 						this->amount++;
 						isOk = false;
 					}
@@ -90,44 +204,30 @@ void AIWindow::update(RenderWindow& window, Event& event)
 				}
 
 			}
-			for (int i = 0; i < 3; i++)
-			{
-				if ((fields[i][0].getWhich() == 1 && fields[i][1].getWhich() == 1 && fields[i][2].getWhich() == 1) ||
-					(fields[0][i].getWhich() == 1 && fields[1][i].getWhich() == 1 && fields[2][i].getWhich() == 1))
-				{
-					whoWon = 1;
-					states = States::WIN;
-				}
-				if ((fields[i][0].getWhich() == 2 && fields[i][1].getWhich() == 2 && fields[i][2].getWhich() == 2) ||
-					(fields[0][i].getWhich() == 2 && fields[1][i].getWhich() == 2 && fields[2][i].getWhich() == 2))
-				{
-					whoWon = 2;
-					states = States::WIN;
-				}
-			}
-			if ((fields[0][0].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][2].getWhich() == 1) ||
-				(fields[0][2].getWhich() == 1 && fields[1][1].getWhich() == 1 && fields[2][0].getWhich() == 1))
-			{
-				whoWon = 1;
-				states = States::WIN;
-			}
-			if ((fields[0][0].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][2].getWhich() == 2) ||
-				(fields[0][2].getWhich() == 2 && fields[1][1].getWhich() == 2 && fields[2][0].getWhich() == 2))
-			{
-				whoWon = 2;
-				states = States::WIN;
-			}
 
-			if (this->amount >= 9)
+			if (this->amount == 9)
 			{
 				whoWon = 0;
 				states = States::WIN;
 			}
+
+			
 		}
 
 	}
 	else if (event.type == Event::MouseButtonReleased)
 		isOk = true;
+	int result = this->isWin();
+	if (result == 10)
+	{
+		whoWon = 2;
+		states = States::WIN;
+	}
+	else if (result == -10)
+	{
+		whoWon = 1;
+		states = States::WIN;
+	}
 	//gra
 }
 
@@ -138,6 +238,7 @@ int AIWindow::getWhoWon()
 
 void AIWindow::draw(RenderTarget& target, RenderStates states) const
 {
+	target.draw(spritegame);
 	target.draw(sprite);
 	target.draw(text);
 	target.draw(text2);

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 using namespace sf;
 
 enum bColors{NO_CLICKED, ON_BUTTON, CLICKED};
@@ -15,6 +16,11 @@ private:
 	Color no_clicked;
 	Color on_button;
 	Color clicked;
+
+	SoundBuffer clickBuffer;
+	SoundBuffer buttonBuffer;
+	Sound clickSound;
+	Sound buttonSound;
 
 public:
 	Button() = delete;

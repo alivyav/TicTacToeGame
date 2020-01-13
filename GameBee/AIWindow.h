@@ -10,6 +10,9 @@ private:
 	Field fields[3][3];
 	Button* settings;
 
+	int bestMoveX; 
+	int bestMoveY;
+
 	int amount = 0;
 	bool isOk{ true };
 
@@ -22,8 +25,12 @@ private:
 	Text text;
 	Text text2;
 	Font font;
-	const sf::Texture texture;
-	sf::Sprite sprite;
+	const Texture texture;
+	Sprite sprite;
+	Sprite spritegame;
+
+	int minimax(int depth, bool isMaximizing);
+	int isWin();
 public:
 	AIWindow();
 	~AIWindow();
