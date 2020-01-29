@@ -2,19 +2,12 @@
 #include<iostream>
 FriendWindow::FriendWindow() 
 {
-	//const_cast<Texture&>(texturegame).loadFromFile("Resources/res/game.png");
-	//spritegame.setTexture(texturegame);
-	//spritegame.setPosition(0, 0);
-
 	font.loadFromFile("Resources/fonts/beon.ttf");
 	text.setFont(font);
 	text.setString("Get 3 of your marks in a row ");
 	text.setCharacterSize(48);
 	text.setFillColor(Color(255, 255, 0));
 	text.setPosition(50, 50);
-
-	settings = new Button(700, 900, 50, 50, "S", 50);
-	settings->setColors();
 
 	const_cast<Texture&>(texture).loadFromFile("Resources/res/Grid.png");
 	sprite.setTexture(texture);
@@ -62,10 +55,7 @@ void FriendWindow::update(RenderWindow& window, Event& event)
 		
 
 	Vector2f position = Vector2f(Mouse::getPosition(window));
-	if (settings->Update(position, event))
-	{
 
-	}
 	if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
 	{
 		if (isOk)
@@ -142,7 +132,6 @@ void FriendWindow::draw(RenderTarget& target, RenderStates states) const
 	target.draw(sprite);
 	target.draw(text);
 	target.draw(text2);
-	target.draw(*settings);
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)

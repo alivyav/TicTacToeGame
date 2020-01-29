@@ -16,8 +16,6 @@ EndWindow::EndWindow()
 	yes->setColors();
 	no = new Button(500, 800, 170, 70, "No :(",65);
 	no->setColors();
-	settings = new Button(700, 900, 50, 50, "S", 50);
-	settings->setColors();
 
 }
 EndWindow::~EndWindow()
@@ -61,10 +59,7 @@ void EndWindow::update(RenderWindow& window, Event& event)
 	{
 		window.close();
 	}
-	if (settings->Update(position, event))
-	{
 
-	}
 
 }
 void EndWindow::draw(RenderTarget& target, RenderStates states) const
@@ -73,6 +68,5 @@ void EndWindow::draw(RenderTarget& target, RenderStates states) const
 	target.draw(text);
 	target.draw(*yes);
 	target.draw(*no);
-	target.draw(*settings);
 	target.draw(winner);
 }

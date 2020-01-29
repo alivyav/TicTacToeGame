@@ -8,7 +8,6 @@ class FriendWindow : public Drawable
 {
 private:
 	Field fields[3][3];
-	Button* settings;
 
 	int amount = 0;
 	bool isOk{ true };

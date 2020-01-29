@@ -13,9 +13,6 @@ AIWindow::AIWindow()
 	text.setFillColor(Color(255, 255, 0));
 	text.setPosition(50, 50);
 
-	settings = new Button(700, 900, 50, 50, "S", 50);
-	settings->setColors();
-
 	const_cast<Texture&>(texture).loadFromFile("Resources/res/Grid.png");
 	sprite.setTexture(texture);
 	sprite.setPosition(150, 300);
@@ -40,52 +37,85 @@ AIWindow::~AIWindow()
 
 }
 
-int AIWindow::minimax(int depth, bool isMaximizing)
+int AIWindow::max()
 {
 	int result = this->isWin();
 	if (result != 100)
 	{
 		return result;
 	}
-	if (isMaximizing)
+
+	int bestScore = -10000;
+	for (int i = 0; i < 3; i++)
 	{
-		int bestScore = -10000;
-		for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
 		{
-			for (int j = 0; j < 3; j++)
+			if (fields[i][j].getWhich() == 0)
 			{
-				if (fields[i][j].getWhich() == 0)
-				{
-					fields[i][j].setWhich(1);
-					int score = minimax(depth + 1, false);
-					fields[i][j].setWhich(0);
-					if (score > bestScore)
-						bestScore = score;
-				}
+				fields[i][j].setWhich(2);
+				int score = min(); 
+				fields[i][j].setWhich(0);
+				if (score >= bestScore)
+					bestScore = score;
 			}
 		}
-		return bestScore;
 	}
-	else
-	{
-		int bestScore = 100000;
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				if (fields[i][j].getWhich() == 0)
-				{
-					fields[i][j].setWhich(2);
-					int score = minimax(depth + 1, true);
-					fields[i][j].setWhich(0);
-					if (score < bestScore)
-						bestScore = score;
-				}
-			}
-		}
-		return bestScore;
-	}
+	return bestScore;
 }
+
+int AIWindow::min()
+{
+
+	int result = this->isWin();
+	if (result != 100)
+	{
+		return result;
+	}
+
+	int bestScore = 10000;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (fields[i][j].getWhich() == 0)
+			{
+				fields[i][j].setWhich(1);
+				int score = max();
+				fields[i][j].setWhich(0);
+				if (score <= bestScore)
+					bestScore = score;
+			}
+		}
+	}
+	return bestScore;
+}
+
+void AIWindow::minimax()
+{
+	int bestScore = 10000;
+	bestMove[0] = 0;
+	bestMove[1] = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (fields[i][j].getWhich() == 0)
+			{
+				fields[i][j].setWhich(1);
+				int score = max();
+				fields[i][j].setWhich(0);
+				if (score <= bestScore)
+				{
+					bestScore = score;
+					bestMove[0] = i;
+					bestMove[1] = j;
+				}
+			}
+		}
+	}
+	//return bestMove;
+	}
+
 
 int AIWindow::isWin()
 {
@@ -144,44 +174,12 @@ void AIWindow::update(RenderWindow& window, Event& event)
 
 
 	Vector2f position = Vector2f(Mouse::getPosition(window));
-	if (settings->Update(position, event))
-	{
-
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			std::cout << fields[i][j].getWhich() << " - ";
-		}
-		std::cout << std::endl;
-	}
-	std::cout << "---------------------------------------" << std::endl;
 
 	if (this->amount % 2 != 0)
 	{
-		int bestScore = -1000000;
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				if (fields[i][j].getWhich() == 0)
-				{
-					fields[i][j].setWhich(1);
-					int score = minimax(0, false);
-					fields[i][j].setWhich(0);
-					if (score > bestScore)
-					{
-						bestScore = score;
-						this->bestMoveX = i;
-						this->bestMoveY = j;
-					}
-				}
-			}
-		}
-		fields[bestMoveX][bestMoveY].setWhich(1);
-		fields[bestMoveX][bestMoveY].setField(true);
+		minimax();
+		fields[bestMove[0]][bestMove[1]].setWhich(1);
+		fields[bestMove[0]][bestMove[1]].setField(true);
 		this->amount++;
 	}
 	else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left && (this->amount % 2 == 0))
@@ -196,7 +194,7 @@ void AIWindow::update(RenderWindow& window, Event& event)
 					{
 						fields[a][b].setField(true);
 						fields[a][b].setWhich(2);
-						std::cout << fields[a][b].getWhich() << std::endl;
+						//std::cout << fields[a][b].getWhich() << std::endl;
 						this->amount++;
 						isOk = false;
 					}
@@ -228,6 +226,7 @@ void AIWindow::update(RenderWindow& window, Event& event)
 		whoWon = 1;
 		states = States::WIN;
 	}
+
 	//gra
 }
 
@@ -242,7 +241,6 @@ void AIWindow::draw(RenderTarget& target, RenderStates states) const
 	target.draw(sprite);
 	target.draw(text);
 	target.draw(text2);
-	target.draw(*settings);
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)

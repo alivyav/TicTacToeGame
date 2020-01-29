@@ -8,10 +8,6 @@ GameLoop::GameLoop(unsigned int width, unsigned int height, string title)
 	this->friendWindow = new FriendWindow();
 	this->aiWindow = new AIWindow();
 
-	music.openFromFile("Resources/music.ogg");
-	music.setLoop(true);
-	music.play();
-
 	states = States::START;
 	this->window.create(VideoMode(width, height), title, Style::Close | Style::Titlebar);
 	this->window.setActive(true);
@@ -33,7 +29,6 @@ void GameLoop::Loop()
 				window.close();
 			}
 		}
-
 		if (isOk && states == States::WIN)
 		{
 			if (isOk2)

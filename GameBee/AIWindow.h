@@ -8,11 +8,6 @@ class AIWindow : public Drawable
 {
 private:
 	Field fields[3][3];
-	Button* settings;
-
-	int bestMoveX; 
-	int bestMoveY;
-
 	int amount = 0;
 	bool isOk{ true };
 
@@ -29,8 +24,13 @@ private:
 	Sprite sprite;
 	Sprite spritegame;
 
-	int minimax(int depth, bool isMaximizing);
+	int bestMove[2]{};
+
+	void minimax();
 	int isWin();
+	int min();
+	int max();
+
 public:
 	AIWindow();
 	~AIWindow();

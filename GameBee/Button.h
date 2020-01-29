@@ -13,14 +13,10 @@ private:
 	RectangleShape shape;
 	int bState{ NO_CLICKED };
 	bool isClicked;
+	bool hoverOnce = false;
 	Color no_clicked;
 	Color on_button;
 	Color clicked;
-
-	SoundBuffer clickBuffer;
-	SoundBuffer buttonBuffer;
-	Sound clickSound;
-	Sound buttonSound;
 
 public:
 	Button() = delete;

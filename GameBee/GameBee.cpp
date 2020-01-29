@@ -6,4 +6,4 @@ int main()
 {
 	GameLoop gameloop(800,1000,"Tic Tac Toe");
 	return EXIT_SUCCESS;
-}
+}	

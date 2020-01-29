@@ -11,12 +11,6 @@ Button::Button(float x, float y, float width, float height, std::string text, in
 	this->text.setFont(font);
 	this->text.setCharacterSize(size);
 	this->text.setPosition(x, y);
-
-	clickBuffer.loadFromFile("Resources/Button.wav");
-	buttonBuffer.loadFromFile("Resources/Click.wav");
-
-	buttonSound.setBuffer(buttonBuffer);
-	clickSound.setBuffer(clickBuffer);
 }
 
 void Button::draw(RenderTarget& target, RenderStates states) const
@@ -27,18 +21,20 @@ void Button::draw(RenderTarget& target, RenderStates states) const
 
 bool Button::Update(Vector2f position, Event event)
 {
-	isClicked = false;
 	bState = NO_CLICKED;
+	isClicked = false;
 
 	if (shape.getGlobalBounds().contains(position))
 	{
 		bState = ON_BUTTON;
 		if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
 		{
-			bState = CLICKED;
 			isClicked = true;
+			bState = CLICKED;
 		}
 	}
+	else
+		hoverOnce = true;
 
 	switch (this->bState)
 	{
@@ -46,11 +42,9 @@ bool Button::Update(Vector2f position, Event event)
 		text.setFillColor(no_clicked);
 		break;
 	case ON_BUTTON:
-		buttonSound.play();
 		text.setFillColor(on_button);
 		break;
 	case CLICKED:
-		clickSound.play();
 		text.setFillColor(clicked);
 		break;
 	default:
@@ -60,6 +54,7 @@ bool Button::Update(Vector2f position, Event event)
 	return isClicked;
 
 }
+
 void Button::setColors(Color no_clicked, Color on_button, Color clicked)
 {
 	this->no_clicked = no_clicked;

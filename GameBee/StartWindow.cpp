@@ -9,7 +9,7 @@ StartWindow::StartWindow()
 	font.loadFromFile("Resources/fonts/beon.ttf");
 	text.setFont(font);
 	text.setString("tic tac toe ");
-	text.setCharacterSize(90); //zmienic cos tutaj
+	text.setCharacterSize(90);
 	text.setFillColor(Color::Magenta);
 	text.setPosition(50, 50);
 	//const_cast<Texture&>(texture).loadFromFile("Resources/res/tic.png");
@@ -20,10 +20,8 @@ StartWindow::StartWindow()
 	button->setColors();
 	button2 = new Button(285,850,215,100, "EXIT",100);
 	button2->setColors();
-	button3 = new Button(700, 900, 50, 50, "S",50);
-	button3->setColors();
-
 }
+
 StartWindow::~StartWindow()
 {
 
@@ -40,11 +38,8 @@ void StartWindow::update(RenderWindow& window, Event& event)
 	{
 		window.close();
 	}
-	if (button3->Update(position, event))
-	{
-
-	}
 }
+
 void StartWindow::draw(RenderTarget& target, RenderStates states) const 
 {
 	target.draw(spriteb);
@@ -52,5 +47,4 @@ void StartWindow::draw(RenderTarget& target, RenderStates states) const
 	target.draw(text);
 	target.draw(*button);
 	target.draw(*button2);
-	target.draw(*button3);
 }

@@ -18,8 +18,6 @@ class EndWindow : public Drawable
 
 	Button* yes;
 	Button* no;
-	Button* settings;
-
 public:
 	EndWindow();
 	~EndWindow();

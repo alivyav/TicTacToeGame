@@ -17,11 +17,12 @@ private:
 	Sprite spritef;
 	Sprite spritea;
 
+	bool first=true;
+
 	Text text;
 	Font font;
 	Button* button;
 	Button* button2;
-	Button* settings;
 public:
 	OptionWindow();
 	~OptionWindow();
